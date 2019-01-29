@@ -91,7 +91,7 @@ def dagger(mixing_decay, seed):
 
 
 def aggrevate(mixing_decay, seed):
-    env, teacher, learner = learning_system('aggrevate-'.format(mixing_decay), seed)
+    env, teacher, learner = learning_system('aggrevate-{}'.format(mixing_decay), seed)
 
     return AggreVaTe(env=env,
                      teacher=teacher,
@@ -104,7 +104,7 @@ def aggrevate(mixing_decay, seed):
 
 
 def dropout_dagger(uncertainty_threshold, seed):
-    env, teacher, learner = learning_system('dropout_dagger', seed)
+    env, teacher, learner = learning_system('dropout_dagger-{}'.format(uncertainty_threshold), seed)
 
     return DropoutDAgger(env=env,
                          teacher=teacher,
@@ -116,12 +116,12 @@ def dropout_dagger(uncertainty_threshold, seed):
 
 
 def upms_dagger(uncertainty_threshold, seed):
-    env, teacher, learner = learning_system('upms_dagger', seed)
+    env, teacher, learner = learning_system('upms_dagger-{}'.format(uncertainty_threshold), seed)
 
     return UPMSDAgger(env=env,
                       teacher=teacher,
                       learner=learner,
-                      explorer=learner,
+                      explorer=None,
                       horizon=HORIZON,
                       episodes=EPISODES,
                       safety_coefficient=SATURATION_POINT / uncertainty_threshold,
@@ -129,7 +129,7 @@ def upms_dagger(uncertainty_threshold, seed):
 
 
 def upms(uncertainty_threshold, seed):
-    env, teacher, learner = learning_system('upms', seed)
+    env, teacher, learner = learning_system('upms-{}'.format(uncertainty_threshold), seed)
 
     return UPMS(env=env,
                 teacher=teacher,
@@ -164,7 +164,14 @@ def _default(args):
 
 
 def _safety(args):
-    print(args)
+    if args.algorithm == 'dropout_dagger':
+        algorithm = dropout_dagger(UNCERTAINTY_THRESHOLDS[args.threshold], args.seed)
+    elif args.algorithm == 'upms':
+        algorithm = upms(UNCERTAINTY_THRESHOLDS[args.threshold], args.seed)
+    else:
+        algorithm = upms_dagger(UNCERTAINTY_THRESHOLDS[args.threshold], args.seed)
+
+    train(algorithm)
 
 
 def process_args():
@@ -184,7 +191,8 @@ def process_args():
 
     safety = sub_parsers.add_parser('safety')
     safety.add_argument('algorithm', choices=['upms', 'dropout_dagger', 'upms_dagger'])
-    safety.add_argument('--threshold', type=float)
+    safety.add_argument('--threshold', type=int)
+    safety.set_defaults(func=_safety)
 
     return parser
 
