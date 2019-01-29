@@ -9,7 +9,7 @@ from teachers import UAPurePursuitPolicy
 
 HORIZON = 512
 EPISODES = 32
-LEARNING_RATE = 1e-3
+LEARNING_RATE = 1e-2
 BATCH_SIZE = 64
 EPOCHS = 50
 MAP_NAME = 'udem1'
