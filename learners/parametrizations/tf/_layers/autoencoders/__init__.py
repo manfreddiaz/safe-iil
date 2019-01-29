@@ -1,0 +1,3 @@
+from .variational import VariationalAutoencoder
+from .vanilla import VanillaAutoencoder
+from .conditional_variational import ConditionalVariationalAutoencoder
