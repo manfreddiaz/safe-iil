@@ -82,7 +82,7 @@ class MonteCarloDropoutResnetOneRegression(TensorflowParametrization):
                                 kernel_initializer=tf.contrib.layers.xavier_initializer(uniform=False, seed=self.seed),
                                 bias_initializer=tf.contrib.layers.xavier_initializer(uniform=False, seed=self.seed))
         model = tf.layers.dropout(model,
-                                  rate=0.5,
+                                  rate=0.2,
                                   seed=self.seed,
                                   training=TRAINING)
         model = tf.layers.dense(model,
@@ -91,7 +91,7 @@ class MonteCarloDropoutResnetOneRegression(TensorflowParametrization):
                                 kernel_initializer=tf.contrib.layers.xavier_initializer(uniform=False, seed=self.seed),
                                 bias_initializer=tf.contrib.layers.xavier_initializer(uniform=False, seed=self.seed))
         model = tf.layers.dropout(model,
-                                  rate=0.5,
+                                  rate=0.2,
                                   seed=self.seed,
                                   training=TRAINING)
 
