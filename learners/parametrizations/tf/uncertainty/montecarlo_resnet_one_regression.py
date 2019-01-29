@@ -3,6 +3,8 @@ import tensorflow as tf
 
 from ..tf_parametrization import TensorflowParametrization
 
+TRAINING = False
+
 
 class MonteCarloDropoutResnetOneRegression(TensorflowParametrization):
 
@@ -24,10 +26,10 @@ class MonteCarloDropoutResnetOneRegression(TensorflowParametrization):
                                  strides=2,
                                  padding='same',
                                  kernel_initializer=tf.keras.initializers.he_normal(seed=self.seed))
-        # model = tf.layers.dropout(model,
-        #                           rate=0.1,
-        #                           training=True,
-        #                           seed=self.seed)
+        model = tf.layers.dropout(model,
+                                  rate=0.1,
+                                  training=TRAINING,
+                                  seed=self.seed)
         model = tf.layers.max_pooling2d(model,
                                         pool_size=3,
                                         strides=2)
@@ -41,10 +43,10 @@ class MonteCarloDropoutResnetOneRegression(TensorflowParametrization):
                                       strides=2,
                                       padding='same',
                                       kernel_initializer=tf.keras.initializers.he_normal(seed=self.seed))
-        # residual_1 = tf.layers.dropout(residual_1,
-        #                                rate=0.1,
-        #                                seed=self.seed,
-        #                                training=True)
+        residual_1 = tf.layers.dropout(residual_1,
+                                       rate=0.1,
+                                       seed=self.seed,
+                                       training=TRAINING)
         residual_1 = tf.layers.batch_normalization(residual_1)
         residual_1 = tf.nn.relu(residual_1)
         residual_1 = tf.layers.conv2d(residual_1,
@@ -52,10 +54,10 @@ class MonteCarloDropoutResnetOneRegression(TensorflowParametrization):
                                       kernel_size=3,
                                       padding='same',
                                       kernel_initializer=tf.keras.initializers.he_normal(seed=self.seed))
-        # residual_1 = tf.layers.dropout(residual_1,
-        #                                rate=0.1,
-        #                                seed=self.seed,
-        #                                training=True)
+        residual_1 = tf.layers.dropout(residual_1,
+                                       rate=0.1,
+                                       seed=self.seed,
+                                       training=TRAINING)
         # end residual block
 
         model = tf.layers.conv2d(model,
@@ -64,16 +66,16 @@ class MonteCarloDropoutResnetOneRegression(TensorflowParametrization):
                                  strides=2,
                                  padding='same',
                                  kernel_initializer=tf.keras.initializers.he_normal(seed=self.seed))
-        # model = tf.layers.dropout(model,
-        #                           rate=0.1,
-        #                           seed=self.seed,
-        #                           training=True)
+        model = tf.layers.dropout(model,
+                                  rate=0.1,
+                                  seed=self.seed,
+                                  training=TRAINING)
         model = tf.keras.layers.add([residual_1, model])
         model = tf.layers.flatten(model)
-        # model = tf.layers.dropout(model,
-        #                           rate=0.1,
-        #                           seed=self.seed,
-        #                           training=True)
+        model = tf.layers.dropout(model,
+                                  rate=0.1,
+                                  seed=self.seed,
+                                  training=TRAINING)
         model = tf.layers.dense(model,
                                 units=64,
                                 activation=tf.nn.relu,
@@ -82,7 +84,7 @@ class MonteCarloDropoutResnetOneRegression(TensorflowParametrization):
         model = tf.layers.dropout(model,
                                   rate=0.5,
                                   seed=self.seed,
-                                  training=True)
+                                  training=TRAINING)
         model = tf.layers.dense(model,
                                 units=32,
                                 activation=tf.nn.relu,
@@ -91,7 +93,7 @@ class MonteCarloDropoutResnetOneRegression(TensorflowParametrization):
         model = tf.layers.dropout(model,
                                   rate=0.5,
                                   seed=self.seed,
-                                  training=True)
+                                  training=TRAINING)
 
         model = tf.layers.dense(model, self.action_tensor.shape[1])
 
