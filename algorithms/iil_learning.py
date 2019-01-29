@@ -51,8 +51,11 @@ class InteractiveImitationLearning:
                 next_observation, reward, done, info = self.env.step(action)
                 if self._debug:
                     self.env.render()
-                self._on_step_done(observation, action, reward, done, info)
-                observation = next_observation
+                if done:
+                    break
+                else:
+                    self._on_step_done(observation, action, reward, done, info)
+                    observation = next_observation
         self._on_sampling_done()
 
     # execute current control policy
