@@ -3,7 +3,7 @@ import tensorflow as tf
 
 from ..tf_parametrization import TensorflowParametrization
 
-TRAINING = False
+TRAINING = True
 
 
 class MonteCarloDropoutResnetOneRegression(TensorflowParametrization):
