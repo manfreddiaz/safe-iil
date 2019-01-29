@@ -70,6 +70,10 @@ class MonteCarloDropoutResnetOneRegression(TensorflowParametrization):
                                   training=True)
         model = tf.keras.layers.add([residual_1, model])
         model = tf.layers.flatten(model)
+        model = tf.layers.dropout(model,
+                                  rate=0.9,
+                                  seed=self.seed,
+                                  training=True)
         model = tf.layers.dense(model,
                                 units=64,
                                 activation=tf.nn.relu,
