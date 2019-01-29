@@ -58,7 +58,8 @@ def learning_system(algorithm, seed):
             seed=seed,
         ),
         batch_size=BATCH_SIZE,
-        epochs=EPOCHS
+        epochs=EPOCHS,
+        seed=seed
     )
 
     teacher = UAPurePursuitPolicy(
