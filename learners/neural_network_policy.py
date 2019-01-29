@@ -23,7 +23,7 @@ class NeuralNetworkPolicy:
 
         observations = np.array(observations) # [indexes]
         actions = np.array(expert_actions) # [indexes]
-        observations, actions = sk.utils.shuffle([observations, actions], random_state=self.random_generator)
+        observations, actions = sk.utils.shuffle(observations, actions, random_state=self.random_generator)
         data_size = observations.shape[0]
 
         for _ in tqdm(range(self.epochs)):
