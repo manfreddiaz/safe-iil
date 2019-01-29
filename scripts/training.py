@@ -79,7 +79,7 @@ def behavioral(seed):
 
 
 def dagger(mixing_decay, seed):
-    env, teacher, learner = learning_system('dagger', seed)
+    env, teacher, learner = learning_system('dagger-{}'.format(mixing_decay), seed)
 
     return DAgger(env=env,
                   teacher=teacher,
@@ -91,7 +91,7 @@ def dagger(mixing_decay, seed):
 
 
 def aggrevate(mixing_decay, seed):
-    env, teacher, learner = learning_system('aggrevate', seed)
+    env, teacher, learner = learning_system('aggrevate-'.format(mixing_decay), seed)
 
     return AggreVaTe(env=env,
                      teacher=teacher,
@@ -124,7 +124,8 @@ def upms_dagger(uncertainty_threshold, seed):
                       explorer=learner,
                       horizon=HORIZON,
                       episodes=EPISODES,
-                      safety_coefficient=SATURATION_POINT / uncertainty_threshold)
+                      safety_coefficient=SATURATION_POINT / uncertainty_threshold,
+                      seed=seed)
 
 
 def upms(uncertainty_threshold, seed):
@@ -136,7 +137,8 @@ def upms(uncertainty_threshold, seed):
                 explorer=UARandomExploration(seed=seed),
                 horizon=HORIZON,
                 episodes=EPISODES,
-                safety_coefficient=SATURATION_POINT / uncertainty_threshold)
+                safety_coefficient=SATURATION_POINT / uncertainty_threshold,
+                seed=seed)
 
 
 def train(algorithm):
@@ -153,7 +155,12 @@ def _behavioral(args):
 
 
 def _default(args):
-    print(args)
+    if args.algorithm == 'dagger':
+        algorithm = dagger(MIXING_DECAYS[args.decay], args.seed)
+    else:
+        algorithm = aggrevate(MIXING_DECAYS[args.decay], args.seed)
+
+    train(algorithm)
 
 
 def _safety(args):
@@ -172,12 +179,11 @@ def process_args():
 
     default = sub_parsers.add_parser('default')
     default.add_argument('algorithm', choices=['aggrevate', 'dagger'])
-    default.add_argument('--decay', type=float)
+    default.add_argument('--decay', type=int)
     default.set_defaults(func=_default)
 
     safety = sub_parsers.add_parser('safety')
-    safety.add_argument('algorithm')
-    safety.add_argument('--decay', type=float)
+    safety.add_argument('algorithm', choice=['upms', 'dropout_dagger', 'upms_dagger'])
     safety.add_argument('--threshold', type=float)
 
     return parser
