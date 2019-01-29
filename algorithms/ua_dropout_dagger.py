@@ -5,8 +5,8 @@ from .iil_learning import InteractiveImitationLearning
 
 
 class DropoutDAgger(DAgger):
-    def __init__(self, env, teacher, learner, threshold, horizon, episodes):
-        DAgger.__init__(self, env, teacher, learner, horizon, episodes, None)
+    def __init__(self, env, teacher, learner, threshold, horizon, episodes, seed):
+        DAgger.__init__(self, env, teacher, learner, horizon, episodes, seed, alpha=None)
         self.threshold = threshold
         self.learner_uncertainty = [math.inf, math.inf]
 

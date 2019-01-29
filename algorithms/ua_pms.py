@@ -7,8 +7,8 @@ from .dagger import DAgger
 
 class UPMS(DAgger):
 
-    def __init__(self, env, teacher, learner, explorer, safety_coefficient, horizon, episodes):
-        DAgger.__init__(self, env, teacher, learner, horizon, episodes)
+    def __init__(self, env, teacher, learner, explorer, safety_coefficient, horizon, episodes, seed):
+        DAgger.__init__(self, env, teacher, learner, horizon, episodes, seed)
         self.explorer = explorer
         self._safety_coefficient = safety_coefficient
 

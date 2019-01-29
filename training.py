@@ -3,7 +3,6 @@ import os
 
 import tensorflow as tf
 
-
 from _utils._loggers import Logger
 from algorithms import AggreVaTe, DropoutDAgger, DAgger, UPMSDAgger, UPMS, BehavioralCloning
 from learners import NeuralNetworkPolicy, UARandomExploration
@@ -85,7 +84,8 @@ def dagger(mixing_decay, seed):
                   learner=learner,
                   horizon=HORIZON,
                   episodes=EPISODES,
-                  alpha=mixing_decay)
+                  alpha=mixing_decay,
+                  seed=seed)
 
 
 def aggrevate(mixing_decay, seed):
@@ -109,7 +109,8 @@ def dropout_dagger(uncertainty_threshold, seed):
                          learner=learner,
                          horizon=HORIZON,
                          episodes=EPISODES,
-                         threshold=uncertainty_threshold)
+                         threshold=uncertainty_threshold,
+                         seed=seed)
 
 
 def upms_dagger(uncertainty_threshold, seed):
