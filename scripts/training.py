@@ -1,8 +1,6 @@
 import argparse
 import os
 
-import tensorflow as tf
-
 from _utils._loggers import Logger
 from algorithms import AggreVaTe, DropoutDAgger, DAgger, UPMSDAgger, UPMS, BehavioralCloning
 from learners import NeuralNetworkPolicy, UARandomExploration
@@ -12,8 +10,8 @@ from teachers import UAPurePursuitPolicy
 HORIZON = 512
 EPISODES = 32
 LEARNING_RATE = 1e-3
-BATCH_SIZE = 32
-EPOCHS = 10
+BATCH_SIZE = 64
+EPOCHS = 50
 MAP_NAME = 'udem1'
 SATURATION_POINT = 4
 SAMPLES = 25
@@ -39,6 +37,10 @@ def experimental_entry(algorithm, seed):
 
 def learning_system(algorithm, seed):
     from gym_duckietown.envs import DuckietownEnv
+    import tensorflow as tf
+
+    tf.set_random_seed(seed=seed)
+
     env = DuckietownEnv(
         domain_rand=False,
         max_steps=HORIZON,
