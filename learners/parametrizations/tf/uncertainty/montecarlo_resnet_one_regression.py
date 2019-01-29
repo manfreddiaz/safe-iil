@@ -25,7 +25,7 @@ class MonteCarloDropoutResnetOneRegression(TensorflowParametrization):
                                  padding='same',
                                  kernel_initializer=tf.keras.initializers.he_normal(seed=self.seed))
         model = tf.layers.dropout(model,
-                                  rate=0.95,
+                                  rate=0.1,
                                   training=True,
                                   seed=self.seed)
         model = tf.layers.max_pooling2d(model,
@@ -42,7 +42,7 @@ class MonteCarloDropoutResnetOneRegression(TensorflowParametrization):
                                       padding='same',
                                       kernel_initializer=tf.keras.initializers.he_normal(seed=self.seed))
         residual_1 = tf.layers.dropout(residual_1,
-                                       rate=0.95,
+                                       rate=0.1,
                                        seed=self.seed,
                                        training=True)
         residual_1 = tf.layers.batch_normalization(residual_1)
@@ -53,7 +53,7 @@ class MonteCarloDropoutResnetOneRegression(TensorflowParametrization):
                                       padding='same',
                                       kernel_initializer=tf.keras.initializers.he_normal(seed=self.seed))
         residual_1 = tf.layers.dropout(residual_1,
-                                       rate=0.95,
+                                       rate=0.1,
                                        seed=self.seed,
                                        training=True)
         # end residual block
@@ -65,13 +65,13 @@ class MonteCarloDropoutResnetOneRegression(TensorflowParametrization):
                                  padding='same',
                                  kernel_initializer=tf.keras.initializers.he_normal(seed=self.seed))
         model = tf.layers.dropout(model,
-                                  rate=0.95,
+                                  rate=0.1,
                                   seed=self.seed,
                                   training=True)
         model = tf.keras.layers.add([residual_1, model])
         model = tf.layers.flatten(model)
         model = tf.layers.dropout(model,
-                                  rate=0.95,
+                                  rate=0.1,
                                   seed=self.seed,
                                   training=True)
         model = tf.layers.dense(model,
