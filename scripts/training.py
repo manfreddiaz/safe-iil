@@ -52,7 +52,7 @@ def learning_system(algorithm, seed):
 
     learner = NeuralNetworkPolicy(
         parametrization=MonteCarloDropoutResnetOneRegression(seed=seed, samples=SAMPLES),
-        optimizer=tf.train.AdamOptimizer(learning_rate=LEARNING_RATE),
+        optimizer=tf.train.RMSPropOptimizer(learning_rate=LEARNING_RATE),
         storage_location=experimental_entry(
             algorithm=algorithm,
             seed=seed,
