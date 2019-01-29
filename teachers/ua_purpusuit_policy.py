@@ -23,11 +23,11 @@ class UAPurePursuitPolicy:
         distance_to_road_center = lane_pose.dist
         angle_from_straight_in_rads = lane_pose.angle_rad
 
-        steering = K_P * distance_to_road_center + K_D * angle_from_straight_in_rads  # You should overwrite this value
+        steering = K_P * distance_to_road_center + K_D * angle_from_straight_in_rads
 
         action = [self.ref_velocity, steering]
 
-        if abs(distance_to_road_center) < self.position_threshold\
+        if abs(distance_to_road_center) > self.position_threshold\
                 or abs(angle_from_straight_in_rads) > self.angle_threshold:
             return action, 0.0
         else:
