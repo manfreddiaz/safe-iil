@@ -183,7 +183,7 @@ def process_args():
     default.set_defaults(func=_default)
 
     safety = sub_parsers.add_parser('safety')
-    safety.add_argument('algorithm', choice=['upms', 'dropout_dagger', 'upms_dagger'])
+    safety.add_argument('algorithm', choices=['upms', 'dropout_dagger', 'upms_dagger'])
     safety.add_argument('--threshold', type=float)
 
     return parser
