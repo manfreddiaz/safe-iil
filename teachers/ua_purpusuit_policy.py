@@ -1,9 +1,8 @@
 import math
 
-POSITION_THRESHOLD = 0.04
-ANGLE_THRESHOLD = 0.04
+POSITION_THRESHOLD = 0.6  # 1/4 of lane width
+ANGLE_THRESHOLD = math.radians(30)  # 30 degrees in rad
 REF_VELOCITY = 0.4
-FOLLOWING_DISTANCE = 0.3
 
 K_P = 10
 K_D = 10
