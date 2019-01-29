@@ -1,4 +1,4 @@
-from imitation.algorithms import UPMS
+from .ua_pms import UPMS
 
 
 class UPMSDAgger(UPMS):

@@ -2,7 +2,7 @@ import math
 
 import numpy as np
 
-from imitation.algorithms import DAgger
+from .dagger import DAgger
 
 
 class UPMS(DAgger):

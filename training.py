@@ -3,12 +3,12 @@ import os
 
 import tensorflow as tf
 
-from gym_duckietown.envs import DuckietownEnv
-from ._utils._loggers import Logger
-from .algorithms import AggreVaTe, DropoutDAgger, DAgger, UPMSDAgger, UPMS, BehavioralCloning
-from .learners import NeuralNetworkPolicy, UARandomExploration
-from .learners.parametrizations.tf import MonteCarloDropoutResnetOneRegression
-from .teachers import UAPurePursuitPolicy
+
+from _utils._loggers import Logger
+from algorithms import AggreVaTe, DropoutDAgger, DAgger, UPMSDAgger, UPMS, BehavioralCloning
+from learners import NeuralNetworkPolicy, UARandomExploration
+from learners.parametrizations.tf import MonteCarloDropoutResnetOneRegression
+from teachers import UAPurePursuitPolicy
 
 HORIZON = 512
 EPISODES = 32
@@ -17,6 +17,7 @@ BATCH_SIZE = 32
 EPOCHS = 10
 MAP_NAME = 'udem1'
 SATURATION_POINT = 4
+SAMPLES = 25
 
 MIXING_DECAYS = [0.5, 0.65, 0.8, 0.95]
 UNCERTAINTY_THRESHOLDS = [0.005, 0.05, 0.5, 1, 5]
@@ -38,16 +39,18 @@ def experimental_entry(algorithm, seed):
 
 
 def learning_system(algorithm, seed):
-
+    from gym_duckietown.envs import DuckietownEnv
     env = DuckietownEnv(
         domain_rand=False,
         max_steps=HORIZON,
         map_name=MAP_NAME,
-        seed=seed
+        seed=seed,
+        camera_width=160,
+        camera_height=120
     )
 
     learner = NeuralNetworkPolicy(
-        parametrization=MonteCarloDropoutResnetOneRegression(seed=seed),
+        parametrization=MonteCarloDropoutResnetOneRegression(seed=seed, samples=SAMPLES),
         optimizer=tf.train.AdamOptimizer(learning_rate=LEARNING_RATE),
         storage_location=experimental_entry(
             algorithm=algorithm,
@@ -61,7 +64,7 @@ def learning_system(algorithm, seed):
         env=env
     )
 
-    return env, learner, teacher
+    return env, teacher, learner
 
 
 def behavioral(seed):
