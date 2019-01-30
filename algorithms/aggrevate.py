@@ -6,7 +6,7 @@ from .dagger import DAgger
 class AggreVaTe(DAgger):
 
     def __init__(self, env, teacher, learner, explorer, horizon, episodes, seed=None, alpha=0.99):
-        DAgger.__init__(self, env, teacher, learner, horizon, episodes, alpha, seed=seed)
+        DAgger.__init__(self, env, teacher, learner, horizon, episodes, seed, alpha)
         self.break_point = None
         self.explorer = explorer
         self.t = horizon
